@@ -84,6 +84,8 @@ fun PantallaPrincipal(
     onTitleUpdated: (String) -> Unit,
     viewModel: TareaViewModel,
 ) {
+    var lastDeletedTask by remember { mutableStateOf<Tarea?>(null) }
+
     var isEditingTitle by remember { mutableStateOf(false) }
     var editedTitle by remember {
         mutableStateOf(
@@ -105,6 +107,25 @@ fun PantallaPrincipal(
 
     var currentOffset by remember { mutableFloatStateOf(0f) }
     val itemHeights = remember { mutableMapOf<Int, Int>() }
+
+    LaunchedEffect(lastDeletedTask) {
+        lastDeletedTask?.let { task ->
+            val result = snackbarHostState.showSnackbar(
+                message = "Tarea '${task.tarea.take(15)}...' eliminada",
+                actionLabel = "DESHACER",
+                duration = SnackbarDuration.Short
+            )
+            when (result) {
+                SnackbarResult.ActionPerformed -> {
+                    viewModel.upsert(task) // Reinsertar si se deshace
+                }
+                SnackbarResult.Dismissed -> {
+                    // No hacer nada, la eliminación ya está en curso
+                }
+            }
+            lastDeletedTask = null // Resetear el estado
+        }
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -313,28 +334,14 @@ fun PantallaPrincipal(
                         ItemTarea(
                             tarea = tarea,
                             onDeleteTarea = { taskToDelete ->
-                                deletedTask = taskToDelete
-                                onDeleteTarea(taskToDelete)  // Usamos el parámetro recibido
+                                val deletedTask = viewModel.delete(taskToDelete)
+                                lastDeletedTask = deletedTask
                             },
-                            onUpsertTarea = { updatedTarea -> onUpsertTarea(updatedTarea) },
-                            viewModel
+                            onUpsertTarea = onUpsertTarea,
+                            viewModel = viewModel
                         )
 
-                        // Snackbar logic
-                        deletedTask?.let { task ->
-                            LaunchedEffect(task) {
-                                val result = snackbarHostState.showSnackbar(
-                                    message = "Tarea '${task.tarea.take(15)}...' eliminada",
-                                    actionLabel = "DESHACER",
-                                    duration = SnackbarDuration.Short
-                                )
 
-                                if (result == SnackbarResult.ActionPerformed) {
-                                    onUpsertTarea(task)  // Usamos el parámetro onUpsertTarea
-                                }
-                                deletedTask = null
-                            }
-                        }
                     }
                 }
 
@@ -350,8 +357,8 @@ fun PantallaPrincipal(
 fun ItemTarea(
     tarea: Tarea,
     onDeleteTarea: (Tarea) -> Unit,
-    onUpsertTarea: (Tarea) -> Unit = {},
-    viewModel: TareaViewModel,
+    onUpsertTarea: (Tarea) -> Unit,
+    viewModel: TareaViewModel
 ) {
 
     var mostraIconoBorrar by remember { mutableStateOf(false) }
