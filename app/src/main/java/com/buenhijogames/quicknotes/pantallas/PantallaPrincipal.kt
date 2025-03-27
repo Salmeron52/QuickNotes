@@ -70,11 +70,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.buenhijogames.quicknotes.BuildConfig
 import com.buenhijogames.quicknotes.componentes.MiTextField
 import com.buenhijogames.quicknotes.model.Tarea
 import com.buenhijogames.quicknotes.publicidad.QuickNotesBanner
 import com.buenhijogames.quicknotes.viewmodels.TareaViewModel
 import kotlin.math.roundToInt
+
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -210,7 +212,7 @@ fun PantallaPrincipal(
                 modifier = Modifier
                     .fillMaxWidth()
                     .windowInsetsPadding(WindowInsets.navigationBars),
-                adId = "ca-app-pub-3206003476681627/3320894374"
+                adId = BuildConfig.ADMOB_BANNER_AD_UNIT_ID
             )
         }
     ) { innerPadding ->
