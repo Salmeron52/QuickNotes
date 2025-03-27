@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -63,6 +66,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -76,7 +80,6 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaPrincipal(
-    modifier: Modifier = Modifier,
     tareas: List<Tarea>,
     onUpsertTarea: (Tarea) -> Unit,
     onDeleteTarea: (Tarea) -> Unit,
@@ -130,7 +133,7 @@ fun PantallaPrincipal(
     }
 
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             CenterAlignedTopAppBar(
@@ -192,6 +195,7 @@ fun PantallaPrincipal(
         contentWindowInsets = WindowInsets.safeDrawing,
         floatingActionButton = {
             FloatingActionButton(
+                modifier =  Modifier.padding(16.dp),
                 onClick = {
                     showNewTaskField = true
                     newTaskText = ""
@@ -203,9 +207,9 @@ fun PantallaPrincipal(
         },
         bottomBar = {
             QuickNotesBanner(
-                // Modifier.fillMaxWidth() es usualmente adecuado aquí
-                // El fillMaxSize() original no tiene sentido en bottomBar
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .windowInsetsPadding(WindowInsets.navigationBars),
                 adId = "ca-app-pub-3206003476681627/3320894374"
             )
         }
@@ -484,6 +488,7 @@ fun ItemTarea(
                             text = tarea.tarea,
                             maxLines = 1,
                             fontSize = 20.sp,
+                            overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .clickable {
                                     isEditing = true

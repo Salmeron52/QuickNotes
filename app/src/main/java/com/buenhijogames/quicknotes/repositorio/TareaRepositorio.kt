@@ -1,5 +1,6 @@
 package com.buenhijogames.quicknotes.repositorio
 
+import androidx.annotation.Keep
 import com.buenhijogames.quicknotes.model.AppSettings
 import com.buenhijogames.quicknotes.model.Tarea
 import com.buenhijogames.quicknotes.room.TareaDao
@@ -7,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
-
+@Keep
 class TareaRepositorio @Inject constructor(private val tareaDao: TareaDao) {
     fun getAll() = tareaDao.getAll().flowOn(Dispatchers.IO).conflate()
     suspend fun upsert(tarea: Tarea) = tareaDao.upsert(tarea)

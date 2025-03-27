@@ -1,6 +1,7 @@
 package com.buenhijogames.quicknotes.viewmodels
 
 import android.util.Log
+import androidx.annotation.Keep
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@Keep
 @HiltViewModel
 class TareaViewModel @Inject constructor(
     private val tareaRepositorio: TareaRepositorio,

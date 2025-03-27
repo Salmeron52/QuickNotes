@@ -1,5 +1,6 @@
 package com.buenhijogames.quicknotes.room
 
+import androidx.annotation.Keep
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
@@ -8,6 +9,7 @@ import com.buenhijogames.quicknotes.model.AppSettings
 import com.buenhijogames.quicknotes.model.Tarea
 import kotlinx.coroutines.flow.Flow
 
+@Keep
 @Dao
 interface TareaDao {
     @Query("SELECT * FROM tareas ORDER BY orden ASC")

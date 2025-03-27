@@ -1,6 +1,7 @@
 package com.buenhijogames.quicknotes.di
 
 import android.content.Context
+import androidx.annotation.Keep
 import androidx.room.Room
 import com.buenhijogames.quicknotes.room.TareaDao
 import dagger.Module
@@ -11,6 +12,7 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import com.buenhijogames.quicknotes.room.TareaDatabase
 
+@Keep
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
