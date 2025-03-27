@@ -68,4 +68,7 @@ dependencies {
     /*kapt(libs.androidx.room.runtime)*/
     kapt("androidx.room:room-compiler:2.6.1")
     implementation(libs.androidx.room.ktx)
+
+    //Admob
+    implementation(libs.play.services.ads)
 }

@@ -68,6 +68,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.buenhijogames.quicknotes.componentes.MiTextField
 import com.buenhijogames.quicknotes.model.Tarea
+import com.buenhijogames.quicknotes.publicidad.QuickNotesBanner
 import com.buenhijogames.quicknotes.viewmodels.TareaViewModel
 import kotlin.math.roundToInt
 
@@ -119,6 +120,7 @@ fun PantallaPrincipal(
                 SnackbarResult.ActionPerformed -> {
                     viewModel.upsert(task) // Reinsertar si se deshace
                 }
+
                 SnackbarResult.Dismissed -> {
                     // No hacer nada, la eliminación ya está en curso
                 }
@@ -198,6 +200,14 @@ fun PantallaPrincipal(
             ) {
                 Icon(Icons.Rounded.Add, "Añadir tarea")
             }
+        },
+        bottomBar = {
+            QuickNotesBanner(
+                // Modifier.fillMaxWidth() es usualmente adecuado aquí
+                // El fillMaxSize() original no tiene sentido en bottomBar
+                modifier = Modifier.fillMaxWidth(),
+                adId = "ca-app-pub-3206003476681627/3320894374"
+            )
         }
     ) { innerPadding ->
         Column(
@@ -280,8 +290,8 @@ fun PantallaPrincipal(
                 }
             }
 
-            LazyColumn {
-                itemsIndexed(tareas) { index, tarea ->
+            LazyColumn(modifier = Modifier.weight(1f)) {
+                itemsIndexed(tareas, key = { _, tarea -> tarea.id }) { index, tarea ->
                     val offset by derivedStateOf {
                         if (viewModel.currentIndex == index) currentOffset else 0f
                     }
@@ -329,8 +339,6 @@ fun PantallaPrincipal(
                                 )
                             }
                     ) {
-                        var deletedTask: Tarea? by remember { mutableStateOf(null) }
-
                         ItemTarea(
                             tarea = tarea,
                             onDeleteTarea = { taskToDelete ->
@@ -358,7 +366,7 @@ fun ItemTarea(
     tarea: Tarea,
     onDeleteTarea: (Tarea) -> Unit,
     onUpsertTarea: (Tarea) -> Unit,
-    viewModel: TareaViewModel
+    viewModel: TareaViewModel,
 ) {
 
     var mostraIconoBorrar by remember { mutableStateOf(false) }
