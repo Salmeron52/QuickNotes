@@ -195,7 +195,7 @@ fun PantallaPrincipal(
         contentWindowInsets = WindowInsets.safeDrawing,
         floatingActionButton = {
             FloatingActionButton(
-                modifier =  Modifier.padding(16.dp),
+                modifier =  Modifier.padding(end = 16.dp),
                 onClick = {
                     showNewTaskField = true
                     newTaskText = ""
