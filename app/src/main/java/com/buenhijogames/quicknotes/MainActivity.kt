@@ -35,9 +35,6 @@ class MainActivity : ComponentActivity() {
                     PantallaPrincipal(
                         tareas = listaTareas,
                         onUpsertTarea = { tarea: Tarea -> tareaViewModel.upsert(tarea) },
-                        onDeleteTarea = { tarea: Tarea ->
-                            val deletedTask = tareaViewModel.delete(tarea)
-                        },
                         onReorder = { oldIndex, newIndex ->
                             tareaViewModel.reordenarTareas(oldIndex, newIndex)
                         },

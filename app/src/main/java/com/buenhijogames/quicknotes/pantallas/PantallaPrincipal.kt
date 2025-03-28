@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -84,7 +83,6 @@ import kotlin.math.roundToInt
 fun PantallaPrincipal(
     tareas: List<Tarea>,
     onUpsertTarea: (Tarea) -> Unit,
-    onDeleteTarea: (Tarea) -> Unit,
     onReorder: (Int, Int) -> Unit,
     appTitle: String,
     onTitleUpdated: (String) -> Unit,
@@ -197,7 +195,7 @@ fun PantallaPrincipal(
         contentWindowInsets = WindowInsets.safeDrawing,
         floatingActionButton = {
             FloatingActionButton(
-                modifier =  Modifier.padding(end = 16.dp),
+                modifier = Modifier.padding(end = 16.dp),
                 onClick = {
                     showNewTaskField = true
                     newTaskText = ""
@@ -297,7 +295,7 @@ fun PantallaPrincipal(
             }
 
             LazyColumn(modifier = Modifier.weight(1f)) {
-                itemsIndexed(tareas, key = { _, tarea -> tarea.id }) { index, tarea ->
+                itemsIndexed(tareas) { index, tarea ->
                     val offset by derivedStateOf {
                         if (viewModel.currentIndex == index) currentOffset else 0f
                     }
